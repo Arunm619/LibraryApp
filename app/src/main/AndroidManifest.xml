@@ -15,6 +15,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LibraryApp">
+
+        <!-- to get control over the orientaion of the Zxing screens  -->
+        <activity
+            android:name="com.journeyapps.barcodescanner.CaptureActivity"
+            android:screenOrientation="fullSensor"
+            tools:replace="screenOrientation" />
+
         <activity
             android:name=".WelcomeActivity"
             android:exported="true">
