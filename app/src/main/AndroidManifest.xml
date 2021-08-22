@@ -4,8 +4,10 @@
     package="io.arunbuilds.libraryapp">
 
     <uses-sdk tools:overrideLibrary="com.google.zxing.client.android" />
-    <uses-permission android:name="android.permission.CAMERA" />
 
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".LibraryApp"

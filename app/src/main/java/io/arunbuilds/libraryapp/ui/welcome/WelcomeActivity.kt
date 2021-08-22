@@ -32,10 +32,15 @@ class WelcomeActivity : AppCompatActivity() {
     }
 
     private fun observerViewModels() {
-        viewModel.scanClick
+        viewModel.actions
             .observe(this) { event ->
                 event.getContentIfNotHandled()?.let {
-                    launchQRCodeScannerActivity()
+                    when (it) {
+                        WelcomeViewModel.Action.TapScanAction -> {
+                            launchQRCodeScannerActivity()
+                        }
+                    }
+
                 }
             }
         viewModel.events
@@ -45,7 +50,7 @@ class WelcomeActivity : AppCompatActivity() {
                         is WelcomeViewModel.Event.ShowSnackBarEvent -> {
                             showSnackBar(action.data)
                         }
-                        is WelcomeViewModel.Event.LaunchHomeActivity -> {
+                        is WelcomeViewModel.Event.LaunchHomeActivityEvent -> {
                             launchHomeActivity()
                         }
                     }
@@ -73,7 +78,7 @@ class WelcomeActivity : AppCompatActivity() {
         val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
         if (result != null) {
             if (result.contents == null) {
-                // User pressed on cancel button from QR code scanner activity
+                // User exited from QR code scanner activity without completing.
                 viewModel.onCancelScan()
                 Timber.i("User cancelled the QR code scanning process.")
             } else {
