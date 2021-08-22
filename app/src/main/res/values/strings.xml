@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">LibraryApp</string>
+    <string name="welcome">Welcome Jake Wharton!</string>
+    <string name="scan">Scan</string>
 </resources>
