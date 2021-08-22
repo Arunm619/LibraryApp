@@ -1,5 +1,8 @@
 package io.arunbuilds.libraryapp.data
 
+/**
+* Data class for the current Library that the user has visited.
+* */
 data class Library(
     val location_details: String? = null,
     val location_id: String? = null,

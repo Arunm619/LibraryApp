@@ -9,7 +9,7 @@ import com.google.zxing.integration.android.IntentIntegrator
 import dagger.hilt.android.AndroidEntryPoint
 import io.arunbuilds.libraryapp.data.Library
 import io.arunbuilds.libraryapp.databinding.ActivityWelcomeBinding
-import io.arunbuilds.libraryapp.ui.main.MainActivity
+import io.arunbuilds.libraryapp.ui.main.HomeActivity
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -34,8 +34,8 @@ class WelcomeActivity : AppCompatActivity() {
     private fun observerViewModels() {
         viewModel.actions
             .observe(this) { event ->
-                event.getContentIfNotHandled()?.let {
-                    when (it) {
+                event.getContentIfNotHandled()?.let { action ->
+                    when (action) {
                         WelcomeViewModel.Action.TapScanAction -> {
                             launchQRCodeScannerActivity()
                         }
@@ -44,11 +44,11 @@ class WelcomeActivity : AppCompatActivity() {
                 }
             }
         viewModel.events
-            .observe(this) { event ->
-                event.getContentIfNotHandled()?.let { action ->
-                    when (action) {
+            .observe(this) {
+                it.getContentIfNotHandled()?.let { event ->
+                    when (event) {
                         is WelcomeViewModel.Event.ShowSnackBarEvent -> {
-                            showSnackBar(action.data)
+                            showSnackBar(event.data)
                         }
                         is WelcomeViewModel.Event.LaunchHomeActivityEvent -> {
                             launchHomeActivity()
@@ -60,7 +60,7 @@ class WelcomeActivity : AppCompatActivity() {
 
     private fun launchHomeActivity() {
         Timber.i("Launching Home Activity")
-        startActivity(MainActivity.getIntent(this))
+        startActivity(HomeActivity.getIntent(this))
         finish()
     }
 
@@ -72,13 +72,11 @@ class WelcomeActivity : AppCompatActivity() {
         }
     }
 
-    // Get the results:
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
         if (result != null) {
             if (result.contents == null) {
-                // User exited from QR code scanner activity without completing.
                 viewModel.onCancelScan()
                 Timber.i("User cancelled the QR code scanning process.")
             } else {

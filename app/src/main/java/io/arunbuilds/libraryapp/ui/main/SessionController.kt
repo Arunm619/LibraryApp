@@ -1,20 +1,17 @@
-package io.arunbuilds.libraryapp.ui
+package io.arunbuilds.libraryapp.ui.main
 
-import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
-import dagger.hilt.android.qualifiers.ApplicationContext
 import io.arunbuilds.libraryapp.data.Library
+import io.arunbuilds.libraryapp.di.SessionControllerSharedPreferences
 import timber.log.Timber
 import javax.inject.Inject
 
 class SessionController @Inject constructor(
-    @ApplicationContext context: Context
+    @SessionControllerSharedPreferences private val prefs: SharedPreferences
 ) {
-    private val prefs: SharedPreferences =
-        context.getSharedPreferences(PREFS_FILENAME, Context.MODE_PRIVATE)
 
-    private var _librarySessionData: String
+    private var _libraryInfo: String
         get() = prefs.getString(SESSION_ID_KEY, EMPTY) ?: EMPTY
         set(value) = prefs.edit().putString(SESSION_ID_KEY, value).apply()
 
@@ -35,7 +32,7 @@ class SessionController @Inject constructor(
     fun setCurrentSession(data: Library) {
         val gson = Gson()
         val json = gson.toJson(data)
-        _librarySessionData = json.also {
+        _libraryInfo = json.also {
             Timber.d(" Setting current session as $it ")
         }
     }
@@ -44,7 +41,7 @@ class SessionController @Inject constructor(
     * Returns the JSON string for the persisted Library info.
     * */
     fun getCurrentSession(): String {
-        return _librarySessionData.also {
+        return _libraryInfo.also {
             Timber.d(" Current session returned is $it ")
         }
     }
@@ -55,7 +52,7 @@ class SessionController @Inject constructor(
     * */
     fun clearCurrentSession() {
         Timber.d("Clearing current session ${getCurrentSession()}")
-        _librarySessionData = EMPTY
+        _libraryInfo = EMPTY
         _sessionStartTimeStamp = 0
     }
 

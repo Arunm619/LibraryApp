@@ -17,21 +17,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LibraryApp">
-
-        <!-- to get control over the orientaion of the Zxing screens  -->
+        <activity
+            android:name=".ui.main.HomeActivity"
+            android:exported="true" />
+        <!-- to get control over the orientaion of the Zxing screens -->
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="fullSensor"
             tools:replace="screenOrientation" />
-
         <activity
-            android:name=".WelcomeActivity"
+            android:name=".ui.welcome.WelcomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".service.LibraryTimerService"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
 </manifest>

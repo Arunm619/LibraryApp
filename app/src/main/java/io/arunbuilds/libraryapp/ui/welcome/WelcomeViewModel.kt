@@ -5,10 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.arunbuilds.libraryapp.ui.SessionController
+import io.arunbuilds.libraryapp.ui.main.SessionController
 import io.arunbuilds.libraryapp.utils.SingleEvent
 import io.arunbuilds.libraryapp.data.Library
-import java.util.*
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
