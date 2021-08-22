@@ -1,4 +1,4 @@
-package io.arunbuilds.libraryapp
+package io.arunbuilds.libraryapp.data
 
 data class Library(
     val location_details: String? = null,

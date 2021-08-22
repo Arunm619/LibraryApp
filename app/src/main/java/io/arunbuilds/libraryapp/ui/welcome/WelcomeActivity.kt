@@ -1,21 +1,22 @@
-package io.arunbuilds.libraryapp
+package io.arunbuilds.libraryapp.ui.welcome
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.zxing.integration.android.IntentIntegrator
 import dagger.hilt.android.AndroidEntryPoint
+import io.arunbuilds.libraryapp.data.Library
 import io.arunbuilds.libraryapp.databinding.ActivityWelcomeBinding
+import io.arunbuilds.libraryapp.ui.main.MainActivity
 import timber.log.Timber
 
 @AndroidEntryPoint
 class WelcomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityWelcomeBinding
-    private val welcomeViewModel: WelcomeViewModel by viewModels()
+    private val viewModel: WelcomeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,27 +24,26 @@ class WelcomeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btnScan.setOnClickListener {
-            welcomeViewModel.onScanButtonClicked()
+            viewModel.onScanButtonClicked()
         }
 
-        welcomeViewModel.scanClick
+        observerViewModels()
+        viewModel.initialise()
+    }
+
+    private fun observerViewModels() {
+        viewModel.scanClick
             .observe(this) { event ->
                 event.getContentIfNotHandled()?.let {
                     launchQRCodeScannerActivity()
                 }
             }
-
-        welcomeViewModel.events
+        viewModel.events
             .observe(this) { event ->
                 event.getContentIfNotHandled()?.let { action ->
                     when (action) {
                         is WelcomeViewModel.Event.ShowSnackBarEvent -> {
-                            if (action.data is String) {
-                                showSnackBar(action.data)
-                            }
-                            if (action.data is Library) {
-                                showSnackBar(action.data)
-                            }
+                            showSnackBar(action.data)
                         }
                         is WelcomeViewModel.Event.LaunchHomeActivity -> {
                             launchHomeActivity()
@@ -55,8 +55,8 @@ class WelcomeActivity : AppCompatActivity() {
 
     private fun launchHomeActivity() {
         Timber.i("Launching Home Activity")
-        //startActivity(HomeActivity.getIntent(this))
-        //finish()
+        startActivity(MainActivity.getIntent(this))
+        finish()
     }
 
     private fun launchQRCodeScannerActivity() {
@@ -74,11 +74,11 @@ class WelcomeActivity : AppCompatActivity() {
         if (result != null) {
             if (result.contents == null) {
                 // User pressed on cancel button from QR code scanner activity
-                welcomeViewModel.onCancelScan()
+                viewModel.onCancelScan()
                 Timber.i("User cancelled the QR code scanning process.")
             } else {
                 val qrContentString = result.contents
-                welcomeViewModel.onQRCodeScanDone(qrContentString)
+                viewModel.onQRCodeScanDone(qrContentString)
                 Timber.i("User scanned a QR code data. Sending for processing.")
             }
         }
@@ -100,12 +100,10 @@ class WelcomeActivity : AppCompatActivity() {
                     "Hey you are at ${content.location_id}",
                     Snackbar.LENGTH_INDEFINITE
                 ).setAction("Start Session") {
-                    welcomeViewModel.onStartSessionClicked(content)
+                    viewModel.onStartSessionClicked(content)
                 }.show()
             }
         }
-
     }
-
 
 }

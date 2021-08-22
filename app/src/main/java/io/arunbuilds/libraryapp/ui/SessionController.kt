@@ -1,9 +1,10 @@
-package io.arunbuilds.libraryapp
+package io.arunbuilds.libraryapp.ui
 
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import dagger.hilt.android.qualifiers.ApplicationContext
+import io.arunbuilds.libraryapp.data.Library
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -17,9 +18,9 @@ class SessionController @Inject constructor(
         get() = prefs.getString(SESSION_ID_KEY, EMPTY) ?: EMPTY
         set(value) = prefs.edit().putString(SESSION_ID_KEY, value).apply()
 
-    private var _sessionStartTimeStamp: String
-        get() = prefs.getString(SESSION_START_TIME_STAMP_KEY, EMPTY) ?: EMPTY
-        set(value) = prefs.edit().putString(SESSION_START_TIME_STAMP_KEY, value).apply()
+    private var _sessionStartTimeStamp: Long
+        get() = prefs.getLong(SESSION_START_TIME_STAMP_KEY, 0)
+        set(value) = prefs.edit().putLong(SESSION_START_TIME_STAMP_KEY, value).apply()
 
 
     fun isSessionActive(): Boolean {
@@ -48,9 +49,14 @@ class SessionController @Inject constructor(
         }
     }
 
+    /*
+    * Clears the stored session details
+    * Library data & start time stamp
+    * */
     fun clearCurrentSession() {
         Timber.d("Clearing current session ${getCurrentSession()}")
         _librarySessionData = EMPTY
+        _sessionStartTimeStamp = 0
     }
 
 
@@ -58,7 +64,7 @@ class SessionController @Inject constructor(
     * Stores the JSON String of the Library object.
     * */
     fun setSessionStartTimeStamp(startTimeStamp: Long) {
-        _sessionStartTimeStamp = startTimeStamp.toString().also {
+        _sessionStartTimeStamp = startTimeStamp.also {
             Timber.d(" Setting start time stamp as  $it")
         }
     }
@@ -68,16 +74,14 @@ class SessionController @Inject constructor(
     * Returns the session start time for the current session.
     * */
     fun getSessionStartTimeStamp(): Long {
-        if (_sessionStartTimeStamp.isNotBlank())
-            return _sessionStartTimeStamp.toLong().also {
-                Timber.d(" Returning the session start timestamp as $it")
-            }
-        else throw IllegalStateException("No start timestamp set. Did you set the timestamp? ")
+        return _sessionStartTimeStamp.also {
+            Timber.d(" Returning the session start timestamp as $it")
+        }
     }
 
 
     private fun isValidSessionQR(libraryInfo: String): Boolean {
-        return libraryInfo.isEmpty().not()
+        return libraryInfo != EMPTY
     }
 
     companion object {

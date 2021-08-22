@@ -1,10 +1,13 @@
-package io.arunbuilds.libraryapp
+package io.arunbuilds.libraryapp.ui.welcome
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.arunbuilds.libraryapp.ui.SessionController
+import io.arunbuilds.libraryapp.utils.SingleEvent
+import io.arunbuilds.libraryapp.data.Library
 import java.util.*
 import javax.inject.Inject
 
@@ -75,7 +78,20 @@ class WelcomeViewModel @Inject constructor(
         // take note of session
         sessionController.setCurrentSession(libraryInfo)
         sessionController.setSessionStartTimeStamp(Date().time)
+        launchHomeActivity()
+    }
+
+    private fun launchHomeActivity() {
         _events.value = SingleEvent(Event.LaunchHomeActivity)
+    }
+
+    /*
+    * All the init logic goes here.
+    * */
+    fun initialise() {
+        if (sessionController.isSessionActive()) {
+            launchHomeActivity()
+        }
     }
 
 

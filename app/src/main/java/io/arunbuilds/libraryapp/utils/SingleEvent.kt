@@ -1,4 +1,4 @@
-package io.arunbuilds.libraryapp
+package io.arunbuilds.libraryapp.utils
 
 /**
  * Used as a wrapper for data that is exposed via a LiveData that represents an event.
