@@ -156,10 +156,12 @@ class HomeActivity : AppCompatActivity() {
 
     private fun showSessionEndedView(sessionDetails: SessionDetails) {
 
-        binding.tvTotalMinsSpent.text = "Total Minutes Spent - ${sessionDetails.timeSpentInMins}"
+        val minutesSpentText = """Time Spent - ${sessionDetails.timeSpentInMins} minutes"""
+        binding.tvTotalMinsSpent.text = minutesSpentText
         binding.tvTotalMinsSpent.visibility = View.VISIBLE
 
-        binding.tvPrice.text = "Price $ ${sessionDetails.totalPrice}"
+        val priceDetailsText = """Price ₹${sessionDetails.totalPrice}"""
+        binding.tvPrice.text = priceDetailsText
         binding.tvPrice.visibility = View.VISIBLE
 
         binding.btnEndSession.visibility = View.GONE

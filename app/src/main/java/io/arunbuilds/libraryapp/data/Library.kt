@@ -1,8 +1,8 @@
 package io.arunbuilds.libraryapp.data
 
 /**
-* Data class for the current Library that the user has visited.
-* */
+ * Data class for the current Library that the user has visited.
+ * */
 data class Library(
     val location_details: String? = null,
     val location_id: String? = null,
@@ -10,9 +10,9 @@ data class Library(
 ) {
     override fun toString(): String {
         return """
-            Location ID - $location_id
-            Location Address - $location_details
-            Price Per Min - $$price_per_min           
-        """.trimIndent()
+            Location - $location_id
+            Address- $location_details
+            Price Per Min - ₹$price_per_min
+            """.trimIndent()
     }
 }

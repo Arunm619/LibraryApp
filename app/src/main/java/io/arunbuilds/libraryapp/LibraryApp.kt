@@ -2,6 +2,7 @@ package io.arunbuilds.libraryapp
 
 import android.app.Application
 import android.os.Build
+import androidx.appcompat.app.AppCompatDelegate
 import dagger.hilt.android.HiltAndroidApp
 import io.arunbuilds.libraryapp.utils.NotificationUtils
 import timber.log.Timber
@@ -19,6 +20,11 @@ class LibraryApp : Application() {
             Timber.i("Library App Created")
         }
         createNotificationChannels()
+        disableDarkMode()
+    }
+
+    private fun disableDarkMode() {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
     }
 
     private fun createNotificationChannels() {
