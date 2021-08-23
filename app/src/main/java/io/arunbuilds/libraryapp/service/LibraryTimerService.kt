@@ -1,8 +1,10 @@
 package io.arunbuilds.libraryapp.service
 
-import android.app.*
+import android.app.Notification
+import android.app.Service
 import android.content.Intent
-import android.os.*
+import android.os.Binder
+import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -87,7 +89,6 @@ class LibraryTimerService : Service() {
         Timber.i("Starting Foreground Service")
         startForeground(Constants.NOTIFICATION_ID, notification)
     }
-
 
     /**
      * Destroy the service removing the notification.

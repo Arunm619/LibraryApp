@@ -34,7 +34,7 @@ object NetworkModule {
     @Provides
     @Singleton
     fun cache(cacheFile: File): Cache {
-        return Cache(cacheFile, 10L * 1000L * 1000L) //10MB Cahe
+        return Cache(cacheFile, 10L * 1000L * 1000L) // 10MB Cahe
     }
 
     @Provides

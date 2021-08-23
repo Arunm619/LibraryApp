@@ -40,7 +40,6 @@ class WelcomeActivity : AppCompatActivity() {
                             launchQRCodeScannerActivity()
                         }
                     }
-
                 }
             }
         viewModel.events
@@ -87,7 +86,6 @@ class WelcomeActivity : AppCompatActivity() {
         }
     }
 
-
     private fun showSnackBar(content: Any) {
         when (content) {
             is String -> {
@@ -108,5 +106,4 @@ class WelcomeActivity : AppCompatActivity() {
             }
         }
     }
-
 }

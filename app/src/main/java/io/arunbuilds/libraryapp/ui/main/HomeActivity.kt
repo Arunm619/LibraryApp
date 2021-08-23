@@ -1,11 +1,11 @@
 package io.arunbuilds.libraryapp.ui.main
 
 import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.ServiceConnection
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
 import android.view.View
@@ -20,9 +20,11 @@ import io.arunbuilds.libraryapp.Constants
 import io.arunbuilds.libraryapp.data.SessionDetails
 import io.arunbuilds.libraryapp.databinding.ActivityHomeBinding
 import io.arunbuilds.libraryapp.service.LibraryTimerService
-import io.arunbuilds.libraryapp.utils.Resource
-import io.arunbuilds.libraryapp.ui.main.HomeViewModel.CONNECTION.*
+import io.arunbuilds.libraryapp.ui.main.HomeViewModel.CONNECTION.CONNECTED
+import io.arunbuilds.libraryapp.ui.main.HomeViewModel.CONNECTION.DISCONNECTED
+import io.arunbuilds.libraryapp.ui.main.HomeViewModel.CONNECTION.UNKNOWN
 import io.arunbuilds.libraryapp.ui.welcome.WelcomeActivity
+import io.arunbuilds.libraryapp.utils.Resource
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -48,7 +50,7 @@ class HomeActivity : AppCompatActivity() {
 
         viewModel.serviceBound.observe(this) { isActive ->
             if (isActive) {
-                //when the activity is destroyed, the service will unbind from it, still running in foreground.
+                // when the activity is destroyed, the service will unbind from it, still running in foreground.
                 // When the app is restarted, it has to be re-bound.
                 bindService(serviceIntent, mServiceConnection, Context.BIND_AUTO_CREATE)
             }
@@ -122,7 +124,6 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-
         binding.btnEndSession.setOnClickListener {
             viewModel.onEndSessionButtonClicked()
         }
@@ -166,7 +167,6 @@ class HomeActivity : AppCompatActivity() {
 
         binding.btnEndSession.visibility = View.GONE
         binding.btnOk.visibility = View.GONE
-
     }
 
     private fun exitActivityAndlaunchWelcomeActivity() {
@@ -245,7 +245,6 @@ class HomeActivity : AppCompatActivity() {
                 viewModel.onCancelScan()
                 Timber.i("User cancelled the QR code scanning process.")
             } else {
-                //Toast.makeText(this, "Scanned: " + result.contents, Toast.LENGTH_LONG).show()
                 val qrContentString = result.contents
                 viewModel.onQRCodeScanDone(qrContentString)
                 Timber.i("User scanned a QR code data $qrContentString. Sending for processing.")

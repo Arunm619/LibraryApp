@@ -3,11 +3,10 @@ package io.arunbuilds.libraryapp.ui.welcome
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.arunbuilds.libraryapp.data.Library
 import io.arunbuilds.libraryapp.ui.main.SessionController
 import io.arunbuilds.libraryapp.utils.SingleEvent
-import io.arunbuilds.libraryapp.data.Library
 import io.arunbuilds.libraryapp.utils.ValidationsUtils
 import java.util.Date
 import javax.inject.Inject
@@ -23,7 +22,6 @@ class WelcomeViewModel @Inject constructor(
     private val _events = MutableLiveData<SingleEvent<Event>>()
     val events: LiveData<SingleEvent<Event>> get() = _events
 
-
     /**
      * Tapped on Scan Button
      * */
@@ -35,7 +33,7 @@ class WelcomeViewModel @Inject constructor(
      * Cancelled from Scanning QR code
      * */
     fun onCancelScan() {
-        //no-op
+        // no-op
     }
 
     /**
@@ -110,7 +108,6 @@ class WelcomeViewModel @Inject constructor(
             launchHomeActivity()
         }
     }
-
 
     /*
     * User Actions

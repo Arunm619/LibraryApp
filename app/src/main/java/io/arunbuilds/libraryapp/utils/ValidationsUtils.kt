@@ -3,11 +3,8 @@ package io.arunbuilds.libraryapp.utils
 import androidx.annotation.VisibleForTesting
 import com.google.gson.Gson
 import io.arunbuilds.libraryapp.data.Library
-
 import org.json.JSONArray
-
 import org.json.JSONObject
-
 
 object ValidationsUtils {
     /*
@@ -46,7 +43,7 @@ object ValidationsUtils {
             }
             data
         } catch (e: Exception) {
-            throw InvalidLibraryDataException("Error preparing for unmarshalling : ${e.toString()}}")
+            throw InvalidLibraryDataException("Error preparing for unmarshalling : $e}")
         }
     }
 
@@ -55,10 +52,10 @@ object ValidationsUtils {
         return try {
             // Construct Library Object
             val libraryInfo = Gson().fromJson(jsonString, Library::class.java)
-            //Perform null and empty checks
+            // Perform null and empty checks
             val isValid = libraryInfo.location_details.isNullOrEmpty()
-                .not() && libraryInfo.location_id.isNullOrEmpty().not()
-                    && libraryInfo.price_per_min != null
+                .not() && libraryInfo.location_id.isNullOrEmpty().not() &&
+                libraryInfo.price_per_min != null
             if (isValid)
                 libraryInfo
             else
@@ -69,7 +66,7 @@ object ValidationsUtils {
     }
 
     private fun isJSONValid(data: String): Boolean {
-        var result : JSONObject? = null
+        var result: JSONObject? = null
         return try {
             result = JSONObject(data)
             true
@@ -86,7 +83,6 @@ object ValidationsUtils {
             }
         }
     }
-
 }
 
 class InvalidLibraryDataException(msg: String) : Exception(msg)

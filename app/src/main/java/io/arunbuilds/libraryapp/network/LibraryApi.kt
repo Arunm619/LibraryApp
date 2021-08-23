@@ -8,7 +8,6 @@ import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 
-
 /**
  * Unsure of the type that server is expecting for submit-session POST API. It returns 200 for everything :)
  * */
@@ -21,19 +20,16 @@ interface LibraryApi {
         @Field("end_time") endTimeStamp: Long
     ): Single<Response<APIResult>>
 
-
     @POST("submit-session")
     fun submitSessionAsBody(
         @Body postBody: PostBody
     ): Single<Response<APIResult>>
-
 }
 
 /**
  * Response given by the submit-session post API
  * */
 data class APIResult(val success: Boolean)
-
 
 /**
  * Body part for the submit-session Post API

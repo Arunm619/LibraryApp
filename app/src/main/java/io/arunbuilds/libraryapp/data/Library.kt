@@ -13,6 +13,6 @@ data class Library(
             Location - $location_id
             Address- $location_details
             Price Per Min - ₹$price_per_min
-            """.trimIndent()
+        """.trimIndent()
     }
 }

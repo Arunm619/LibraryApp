@@ -19,7 +19,6 @@ class SessionController @Inject constructor(
         get() = prefs.getLong(SESSION_START_TIME_STAMP_KEY, 0)
         set(value) = prefs.edit().putLong(SESSION_START_TIME_STAMP_KEY, value).apply()
 
-
     fun isSessionActive(): Boolean {
         return isValidSessionQR(getCurrentSession()).also {
             Timber.d(" Is Valid Session? $it ")
@@ -56,7 +55,6 @@ class SessionController @Inject constructor(
         _sessionStartTimeStamp = 0
     }
 
-
     /*
     * Stores the JSON String of the Library object.
     * */
@@ -66,7 +64,6 @@ class SessionController @Inject constructor(
         }
     }
 
-
     /*
     * Returns the session start time for the current session.
     * */
@@ -75,7 +72,6 @@ class SessionController @Inject constructor(
             Timber.d(" Returning the session start timestamp as $it")
         }
     }
-
 
     private fun isValidSessionQR(libraryInfo: String): Boolean {
         return libraryInfo != EMPTY
@@ -100,4 +96,3 @@ class SessionController @Inject constructor(
         private const val EMPTY = "EMPTY"
     }
 }
-

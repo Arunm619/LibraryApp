@@ -8,7 +8,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThrows
 import org.junit.Test
 
-
 class ValidationsUtilsTest {
 
     @Test
@@ -28,7 +27,6 @@ class ValidationsUtilsTest {
         assertThrows(InvalidLibraryDataException::class.java) {
             ValidationsUtils.cleanUpRawStringToJSONFormat(INVALID_RAW_SCANNED_INPUT_EMPTY)
         }
-
     }
 
     @Test
@@ -45,7 +43,6 @@ class ValidationsUtilsTest {
         assertEquals(expected, ValidationsUtils.isValidLibraryData(VALID_RAW_SCANNED_INPUT))
     }
 
-
     @Test
     fun `isValidLibraryData - test if malformed qr scanned string gives empty result 1`() {
         val expected = Pair(
@@ -53,7 +50,8 @@ class ValidationsUtilsTest {
             null
         )
         assertEquals(
-            expected, ValidationsUtils.isValidLibraryData(
+            expected,
+            ValidationsUtils.isValidLibraryData(
                 INVALID_RAW_SCANNED_INPUT_MALFORMED
             )
         )
@@ -81,7 +79,6 @@ class ValidationsUtilsTest {
         )
     }
 
-
     @Test(expected = JsonSyntaxException::class)
     fun `test if malformed JSON string throws error`() {
         val expected = Library(
@@ -92,18 +89,16 @@ class ValidationsUtilsTest {
         ValidationsUtils.unmarshallJsonStringToJsonObject(INVALID_RAW_SCANNED_INPUT_MALFORMED)
     }
 
-
     companion object {
         val VALID_RAW_SCANNED_INPUT = """
             "{\"location_id\":\"ButterKnifeLib-1234\",\"location_details\":\"ButterKnife Lib, 80 Feet Rd, Koramangala 1A Block, Bangalore\",\"price_per_min\":5.50}"
-            """.trimIndent()
+        """.trimIndent()
         val INVALID_RAW_SCANNED_INPUT_MALFORMED = """
             {\"location_id\":\"ButterKnifeLib-1234\",\"location_details\":\"ButterKnife Lib, 80 Feet Rd, Koramangala 1A Block, Bangalore\",\"price_per_min\":5.50}"
-            """.trimIndent()
+        """.trimIndent()
         const val INVALID_RAW_SCANNED_INPUT_EMPTY = ""
         val VALID_CLEANED_UP_JSON_INPUT = """
             {"location_id":"ButterKnifeLib-1234","location_details":"ButterKnife Lib, 80 Feet Rd, Koramangala 1A Block, Bangalore","price_per_min":5.50}
         """.trimIndent()
     }
-
 }

@@ -1,7 +1,6 @@
 package io.arunbuilds.libraryapp.ui.main
 
 import android.app.Application
-import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -51,7 +50,6 @@ class HomeViewModel @Inject constructor(
     private val _sessionEndedData = MutableLiveData<Pair<Boolean, SessionDetails?>>()
     val sessionEndedData: LiveData<Pair<Boolean, SessionDetails?>> get() = _sessionEndedData
 
-
     /*
     * Timer data that is displayed as a timer in the screen.
     * */
@@ -69,7 +67,7 @@ class HomeViewModel @Inject constructor(
 
     fun initialise() {
         Timber.d("Initializing MainViewModel!")
-        //Get the current session and store it in live data
+        // Get the current session and store it in live data
         if (_libraryData.value == null) {
             fetchCurrentSessionfromController()
         }
@@ -108,7 +106,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun onCancelScan() {
-        //no-op
+        // no-op
     }
 
     fun onQRCodeScanDone(qrContentString: String?) {
@@ -139,7 +137,7 @@ class HomeViewModel @Inject constructor(
      * */
     private fun processValidMatch(libraryInfo: Library) {
 
-        //Stop the timer service
+        // Stop the timer service
         _events.value = SingleEvent(Event.StopTimerService)
 
         val (locationId, endTimeStamp, minutes, _) =
@@ -158,14 +156,14 @@ class HomeViewModel @Inject constructor(
 
             override fun onSuccess(t: Response<APIResult>?) {
                 Timber.d(
-                    "Success ${t.toString()}\n" +
-                            "Body - ${t?.body()} "
+                    "Success ${t}\n" +
+                        "Body - ${t?.body()} "
                 )
                 _submitSessionLoading.value = Resource.Success(t?.body()?.success ?: false)
             }
 
             override fun onError(e: Throwable?) {
-                Timber.d("Error ${e.toString()}")
+                Timber.d("Error $e")
                 _submitSessionLoading.value = Resource.DataError(-1)
             }
         }
@@ -194,7 +192,6 @@ class HomeViewModel @Inject constructor(
         val minutes: Long = diffInMs / 1000 / 60
         val totalPrice = minutes * libraryInfo.price_per_min!!
         val locationId = libraryInfo.location_id!!
-
 
         val result = SessionDetails(
             locationId,

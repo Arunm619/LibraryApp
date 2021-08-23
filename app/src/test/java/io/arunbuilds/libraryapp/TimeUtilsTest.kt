@@ -1,10 +1,8 @@
 package io.arunbuilds.libraryapp
 
 import io.arunbuilds.libraryapp.utils.TimeUtils
+import org.junit.Assert.assertEquals
 import org.junit.Test
-
-import org.junit.Assert.*
-
 
 class TimeUtilsTest {
     @Test
