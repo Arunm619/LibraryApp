@@ -14,4 +14,9 @@ class ExampleUnitTest {
     fun addition_isCorrect() {
         assertEquals(4, 2 + 2)
     }
+
+    @Test(expected = ArithmeticException::class)
+    fun omg() {
+        val blackHole = 1 / 0
+    }
 }

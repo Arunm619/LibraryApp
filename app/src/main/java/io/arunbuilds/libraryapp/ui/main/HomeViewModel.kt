@@ -1,6 +1,7 @@
 package io.arunbuilds.libraryapp.ui.main
 
 import android.app.Application
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,6 +14,7 @@ import io.arunbuilds.libraryapp.network.RemoteRepository
 import io.arunbuilds.libraryapp.service.LibraryTimerService
 import io.arunbuilds.libraryapp.utils.Resource
 import io.arunbuilds.libraryapp.utils.SingleEvent
+import io.arunbuilds.libraryapp.utils.ValidationsUtils
 import io.arunbuilds.libraryapp.utils.isServiceRunningInForeground
 import io.arunbuilds.libraryapp.utils.rx.SchedulerProvider
 import io.reactivex.rxjava3.core.SingleObserver
@@ -117,7 +119,7 @@ class HomeViewModel @Inject constructor(
         // 1. validate
         // 2. clean up
         // 3. Check for match with ongoing session
-        val (isValid, scannedLibraryInfo) = isValidLibraryData(qrContentString)
+        val (isValid, scannedLibraryInfo) = ValidationsUtils.isValidLibraryData(qrContentString)
         if (isValid && scannedLibraryInfo != null && isMatchWithOngoingSession(scannedLibraryInfo)) {
             processValidMatch(scannedLibraryInfo)
         } else {
@@ -260,52 +262,6 @@ class HomeViewModel @Inject constructor(
         CONNECTED,
         DISCONNECTED,
         UNKNOWN
-    }
-
-
-    companion object {
-
-        /*
-        * This method is responsible for checking if the scanned raw data from the QR code is a valid Library information.
-        * Valid library means @Library class fields all should not be null and empty.
-        * Returns Boolean for validity and if valid constructs Library object as well.
-        * */
-        fun isValidLibraryData(scannedRawQRData: String?): Pair<Boolean, Library?> {
-
-            if (scannedRawQRData.isNullOrEmpty()) return Pair(false, null)
-
-            // prepare for unmarshalling into Library object
-            val data = prepareForUnMarshalling(scannedRawQRData)
-
-            return try {
-                // Construct Library Object
-                val libraryInfo = Gson().fromJson(data, Library::class.java)
-                //Perform null and empty checks
-                val isValid = libraryInfo.location_details.isNullOrEmpty()
-                    .not() && libraryInfo.location_id.isNullOrEmpty().not()
-                        && libraryInfo.price_per_min != null
-
-                Pair(isValid, libraryInfo)
-            } catch (e: Exception) {
-                Pair(false, null)
-            }
-        }
-
-        /*
-        * Clean up the raw string to JSON format.
-        * */
-        private fun prepareForUnMarshalling(toCleanup: String): String {
-            var data = toCleanup
-            data = data.replace("\\", "")
-            data = data.removeRange(0, 1)
-            if (data.startsWith("\"")) {
-                data = data.substring(1)
-            }
-            if (data.endsWith("\"")) {
-                data = data.substring(0, data.length - 1)
-            }
-            return data
-        }
     }
 
     override fun onCleared() {

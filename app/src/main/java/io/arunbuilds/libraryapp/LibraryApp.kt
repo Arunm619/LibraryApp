@@ -23,10 +23,16 @@ class LibraryApp : Application() {
         disableDarkMode()
     }
 
+    /**
+     * App doesn't support Dark Mode, So disabling it for stability reasons.
+     * */
     private fun disableDarkMode() {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
     }
 
+    /**
+     * Create the notification channels for OREO+ devices to give better control over the notifications settings.
+     * */
     private fun createNotificationChannels() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Timber.i("Creating Notification Channel ${Constants.NOTIFICATION_CHANNEL_NAME} for Oreo+ Device")
